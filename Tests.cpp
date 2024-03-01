@@ -58,30 +58,17 @@ void test_encode_decode_other()  {
     assert(data == decoded);
 }
 
-// bool test_combined_text_and_secret(QString message, QString secret) {
-//     QString encoded_message = encoder::encode(secret);
-//     QString result = encoded_message + message;
-//     QString decoded_message = encoder::decode(
-//         encoder::remove_unnecessary_symbols(result));
-//     return secret == decoded_message;
-// }
-
-// bool test_full_pipeline(QString message, QString secret) {
-//     QString encoded_message = encoder::mix_text_and_secret(message, secret);
-//     QString extracted_secret = encoder::extract_secret(encoded_message);
-//     return secret == extracted_secret;
-// }
+void test_full_pipeline(string secret) {
+    cout << "Testing full pipeline" << endl;
+    string encoded_message = encoder::create_secret(secret);
+    string mixed_message = "Hello," + encoded_message +  "World!";
+    string extracted_secret = encoder::extract_secret(encoded_message);
+    assert(secret == extracted_secret);
+}
 
 int main(int argc, char *argv[])
 {
-    bool suc = true;
-    // suc = suc && test_encode_decode_ascii();
-    // suc = suc && test_encode_decode_other();
-    // suc = suc && test_combined_text_and_secret("Hello, World!", "secret");
-    // suc = suc && test_combined_text_and_secret("ДАРОВА БРАТВА!", "секрет");
-    // suc = suc && test_full_pipeline("Hello, World!", "secret");
-    // suc = suc && test_full_pipeline("ДАРОВА БРАТВА!", "секрет");
-    mytest();
+    // mytest();
     assert_correct_size();
     string result;
     test_encode_char('a', result);
@@ -89,6 +76,9 @@ int main(int argc, char *argv[])
 
     test_encode_decode_ascii();
     test_encode_decode_other();
-    if (suc) return 0;
-    else return 1;
+
+    test_full_pipeline("суперsecret");
+
+    cout << endl << "TESTS SUCCESSFUL!" << endl;
+    return 0;
 }

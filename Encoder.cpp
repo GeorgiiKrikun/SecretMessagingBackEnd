@@ -71,28 +71,30 @@ std::string encoder::decode(std::string data)
 std::string encoder::remove_unnecessary_symbols(std::string data)
 {
     std::string result;
-    for (auto c : data)
+    auto p = data.begin();
+    while (p!=data.end())
     {
-        if (c == i_0 || c == i_1)
+        std::string c(p, p + encoder::exp_size);
+        if (c == encoder::i_0 || c == encoder::i_1)
         {
             result += c;
+            p+=3;
+        } else {
+            p+=1;
         }
+
     }
     return result;
 }
 
-// std::string encoder::mix_text_and_secret(std::string message, std::string secret)
-// {
-//     std::string message_first_half = message.mid(0, message.size() / 2);
-//     std::string message_second_half = message.mid(message.size() / 2);
-//     std::string encoded_secret = encoder::encode(secret);
-//     return message_first_half + encoded_secret + message_second_half;
-// }
+std::string encoder::create_secret(std::string secret)
+{
+    return encoder::encode(secret);
+}
 
-
-// std::string encoder::extract_secret(std::string message)
-// {
-//     return encoder::decode(
-//         encoder::remove_unnecessary_symbols(message)
-//     );
-// }
+std::string encoder::extract_secret(std::string message)
+{
+    return encoder::decode(
+        encoder::remove_unnecessary_symbols(message)
+    );
+}
