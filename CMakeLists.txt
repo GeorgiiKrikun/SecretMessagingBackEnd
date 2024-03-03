@@ -7,9 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES Encoder.cpp Encoder.h)
 if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
-    set(SOURCES ${SOURCES} EmscriptenBindings.h EmscriptenBindings.cpp)
+    add_executable(Tests ${SOURCES} Tests.cpp)
+
     message("Building with Emscripten. Emscripten bindings are included")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --bind")
+    set(SOURCES ${SOURCES} EmscriptenBindings.h EmscriptenBindings.cpp)
     #Emscripten does not need entrypoint for the executable
     add_executable(SecretMessagingBackEnd ${SOURCES})
 
